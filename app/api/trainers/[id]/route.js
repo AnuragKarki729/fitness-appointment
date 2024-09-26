@@ -4,7 +4,7 @@ import dbConnect from '@/lib/mongodb'; // Ensure this path is correct
 import Trainer from '@/models/Trainer';
 import { corsMiddleware } from '@/lib/corsMiddleware';
 
-export async function GET(request, { params }) {
+export const GET = corsMiddleware(async(request, { params }) => {
   const { id } = params;
   console.log("ID: " ,{id})
   
@@ -22,9 +22,9 @@ export async function GET(request, { params }) {
     console.error('Error fetching trainer:', error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
-}
+})
 
-export async function DELETE(request, { params }) {
+export const DELETE = corsMiddleware(async(request, { params })=> {
   const { id } = params;
   
   try {
@@ -40,9 +40,9 @@ export async function DELETE(request, { params }) {
     console.error('Error deleting trainer:', error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
-}
+})
 
-export async function PUT(req, { params }) {
+export const PUT = corsMiddleware(async(req, { params }) => {
   await dbConnect();
 
   const { id } = params; // Get trainer ID from URL params
@@ -57,10 +57,5 @@ export async function PUT(req, { params }) {
   } catch (error) {
     return new Response(JSON.stringify({ message: 'Error updating trainer', error: error.message }), { status: 500 });
   }
-}
+})
 
-export default corsMiddleware({
-  DELETE,
-  GET,
-  PUT
-});

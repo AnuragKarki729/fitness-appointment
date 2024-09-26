@@ -2,7 +2,7 @@ import dbConnect from '@/lib/mongodb';
 import Appointment from '@/models/Appointment';
 import { corsMiddleware } from '@/lib/corsMiddleware';
 
-export async function GET(req) {
+export const GET = corsMiddleware(async(req) => {
   await dbConnect(); // Connect to MongoDB
 
   const { searchParams } = new URL(req.url);
@@ -29,9 +29,9 @@ export async function GET(req) {
       status: 500,
     });
   }
-}
+})
 
-export async function POST(req) {
+export const POST = corsMiddleware(async(req) =>{
   await dbConnect(); // Connect to MongoDB
 
   const body = await req.json();
@@ -89,11 +89,6 @@ export async function POST(req) {
       status: 500,
     });
   }
-}
+})
 
-export default corsMiddleware({
-  
-  GET,
-  
-  POST
-});
+

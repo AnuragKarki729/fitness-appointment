@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';  // Adjust the path to your connection file
 import User from '@/models/User';  // Adjust the path to your model
 import { corsMiddleware } from '@/lib/corsMiddleware';
-export async function POST(request) {
+export const POST = corsMiddleware(async(request) =>{
   const { username, email, password } = await request.json();  // Adjust according to your request body
 
   try {
@@ -15,9 +15,4 @@ export async function POST(request) {
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
-}
-
-export default corsMiddleware({
- 
-  POST
-});
+})

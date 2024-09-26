@@ -3,7 +3,7 @@ import Appointment from '@/models/Appointment';
 import Trainer from '@/models/Trainer';
 import { corsMiddleware } from '@/lib/corsMiddleware';
 const apiUrl = process.env.NEXT_PUBLIC_API_BASE
-export async function DELETE(req, { params }) {
+export const DELETE = corsMiddleware(async(req, { params })=> {
   await dbConnect();
   const { id } = params; // Appointment ID from the URL
 
@@ -17,9 +17,9 @@ export async function DELETE(req, { params }) {
   } catch (error) {
     return new Response(JSON.stringify({ message: 'Error deleting appointment', error: error.message }), { status: 500 });
   }
-}
+})
 
-export async function GET(req, { params }) {
+export const GET = (async(req, { params }) => {
     await dbConnect();
     const { id } = params; // Appointment ID from the URL
   
@@ -34,9 +34,9 @@ export async function GET(req, { params }) {
     } catch (error) {
       return new Response(JSON.stringify({ message: 'Error fetching appointment', error: error.message }), { status: 500 });
     }
-  }
+  })
 
-  export async function PUT(req, { params }) {
+  export const PUT = (async(req, { params }) => {
     await dbConnect();
     const { id } = params; // Appointment ID from the URL
 
@@ -58,10 +58,10 @@ export async function GET(req, { params }) {
     } catch (error) {
         return new Response(JSON.stringify({ message: 'Error updating appointment', error: error.message }), { status: 500 });
     }
-}
+})
   
   
-export async function POST(req) {
+export const POST = (async(req) =>{
     await dbConnect(); // Connect to MongoDB
   
     const body = await req.json();
@@ -118,11 +118,5 @@ export async function POST(req) {
         status: 500,
       });
     }
-  }
-
-  export default corsMiddleware({
-    DELETE,
-    GET,
-    PUT,
-    POST
-  });
+  })
+  

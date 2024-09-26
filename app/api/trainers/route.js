@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb'; // Ensure this path is correct
 import Trainer from '@/models/Trainer'; // Import your Trainer model
 import { corsMiddleware } from '@/lib/corsMiddleware';
-export async function GET() {
+export const GET = corsMiddleware(async() => {
   try {
     await dbConnect(); // Ensure database connection
     const trainers = await Trainer.find({}); // Use the Mongoose model to find trainers
@@ -12,9 +12,9 @@ export async function GET() {
     console.error('Error fetching trainers:', error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
-}
+})
 
-export async function POST(req) {
+export const POST = corsMiddleware(async(req) => {
   await dbConnect();
 
   const { name, age, expYears, phone, price, imgUrl, type, description } = await req.json();
@@ -36,12 +36,6 @@ export async function POST(req) {
   } catch (error) {
     return new Response(JSON.stringify({ message: 'Error creating trainer', error: error.message }), { status: 500 });
   }
-}
+})
 
-export default corsMiddleware({
-
-  GET,
-
-  POST
-});
 

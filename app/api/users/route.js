@@ -3,7 +3,7 @@ import User from '@/models/User';
 import Appointment from '@/models/Appointment';
 import Trainer from '@/models/Trainer'; // Import Trainer model if needed
 import { corsMiddleware } from '@/lib/corsMiddleware';
-export async function GET() {
+export const GET = corsMiddleware(async(a) => {
   await dbConnect();
 
   try {
@@ -38,8 +38,5 @@ export async function GET() {
   } catch (error) {
     return new Response(JSON.stringify({ message: 'Error fetching users and appointments', error: error.message }), { status: 500 });
   }
-}
+})
 
-export default corsMiddleware({
-  GET
-});

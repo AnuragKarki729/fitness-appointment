@@ -1,7 +1,7 @@
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
-
-export async function GET(req, { params }) {
+import { corsMiddleware } from '@/lib/corsMiddleware';
+export const GET = corsMiddleware(async(req, { params }) =>{
     await dbConnect();
     const { id } = params; // User ID from the URL
 
@@ -15,4 +15,4 @@ export async function GET(req, { params }) {
     } catch (error) {
         return new Response(JSON.stringify({ message: 'Error fetching user', error: error.message }), { status: 500 });
     }
-}
+})
