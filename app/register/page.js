@@ -1,5 +1,10 @@
+"use client"
 import { useState } from 'react';
-import styles from '../../styles/register.module.css';
+import styles from '../styles/register.module.css';
+import Success from '../components/Success'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Button} from 'react-bootstrap'
+import Link from 'next/link'
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState('');
@@ -7,6 +12,8 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const[success,setSuccess] = useState()
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,19 +38,20 @@ const RegisterScreen = () => {
     };
 
     try {
-      const response = await fetch('/api/users/register', {
+      
+      const response = await fetch(`${apiUrl}/api/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
       });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      
       const result = await response.json();
+      setSuccess(true)
+      setUsername()
+      setConfirmPassword()
+      setEmail()
+      setPassword()
       console.log(result);
     } catch (error) {
       console.error('Error registering user:', error);
@@ -53,6 +61,7 @@ const RegisterScreen = () => {
 
   return (
     <div className={styles.container}>
+      {success && (<Success message = 'REGISTRATION SUCCESS'/>)}
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
@@ -61,6 +70,7 @@ const RegisterScreen = () => {
             type="text"
             id="username"
             value={username}
+            style={{marginLeft:'20px'}}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -70,6 +80,7 @@ const RegisterScreen = () => {
             type="email"
             id="email"
             value={email}
+            style={{marginLeft:'20px'}}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -79,6 +90,7 @@ const RegisterScreen = () => {
             type="password"
             id="password"
             value={password}
+            style={{marginLeft:'20px'}}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -88,6 +100,7 @@ const RegisterScreen = () => {
             type="password"
             id="confirm-password"
             value={confirmPassword}
+            style={{marginLeft:'20px'}}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
@@ -96,10 +109,13 @@ const RegisterScreen = () => {
             {error}
           </div>
         )}
-        <button type="submit" className={styles.submitButton}>
+        <Button type="submit" className={styles.submitButton}>
           Create Account
-        </button>
+        </Button>
       </form>
+      <div style={{ marginTop: '15px' }}>
+        <Link href="/login">Have an Account? Login Here</Link>
+      </div>
     </div>
   );
 };
