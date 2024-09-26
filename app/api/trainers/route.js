@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb'; // Ensure this path is correct
 import Trainer from '@/models/Trainer'; // Import your Trainer model
 import { corsMiddleware } from '@/lib/corsMiddleware';
-export const GET = corsMiddleware(async() => {
+export const GET = (async() => {
   try {
     await dbConnect(); // Ensure database connection
     const trainers = await Trainer.find({}); // Use the Mongoose model to find trainers
@@ -14,7 +14,7 @@ export const GET = corsMiddleware(async() => {
   }
 })
 
-export const POST = corsMiddleware(async(req) => {
+export const POST = (async(req) => {
   await dbConnect();
 
   const { name, age, expYears, phone, price, imgUrl, type, description } = await req.json();
