@@ -28,6 +28,7 @@ export default function Home() {
   const createProduct = (data) => {
     fetch(`${APIBASE}/product`, {
       method: "POST",
+      mode: 'no-cors',
       headers: {
         "Content-Type": "application/json",
       },
@@ -40,6 +41,7 @@ export default function Home() {
     
     await fetch(`${APIBASE}/product/${id}`, {
       method: "DELETE",
+      mode: 'no-cors',
     });
     fetchProducts();
   }

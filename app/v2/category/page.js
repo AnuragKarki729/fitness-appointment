@@ -43,6 +43,7 @@ export default function Home() {
       // data.id = data._id
       fetch(`${APIBASE}/category`, {
         method: "PUT",
+        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
         },
@@ -55,6 +56,7 @@ export default function Home() {
     }
     fetch(`${APIBASE}/category`, {
       method: "POST",
+      mode: 'no-cors',
       headers: {
         "Content-Type": "application/json",
       },

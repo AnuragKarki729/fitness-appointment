@@ -82,6 +82,7 @@ const UserAppointments = () => {
         try {
             const response = await fetch(`${apiUrl}/api/appointments/${id}`, {
                 method: 'DELETE',
+                mode: 'no-cors',
             });
 
             if (response.ok) {

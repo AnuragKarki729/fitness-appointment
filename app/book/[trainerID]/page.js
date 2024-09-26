@@ -126,6 +126,7 @@ function BookScreen() {
         try {
             const response = await fetch(`${apiUrl}/api/appointments`, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },

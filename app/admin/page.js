@@ -55,6 +55,7 @@ const AdminPage = () => {
         try {
             const response = await fetch(`${apiUrl}/api/trainers/${editTrainerData._id}`, {
                 method: 'PUT',
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -127,6 +128,7 @@ const AdminPage = () => {
             try {
                 const response = await fetch(`${apiUrl}/api/trainers/${trainerId}`, {
                     method: 'DELETE',
+                    mode: 'no-cors',
                 });
     
                 if (response.ok) {
@@ -151,6 +153,7 @@ const AdminPage = () => {
         try {
             const response = await fetch(`${apiUrl}/api/trainers`, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -187,6 +190,7 @@ const AdminPage = () => {
         try {
             const response = await fetch(`${apiUrl}/api/appointments/${id}`, {
                 method: 'DELETE',
+                mode: 'no-cors',
             });
 
             if (response.ok) {

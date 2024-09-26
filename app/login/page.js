@@ -30,6 +30,7 @@ const LoginScreen = () => {
     try {
       const response = await fetch(`${apiUrl}/api/users/login`, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },

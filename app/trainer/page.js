@@ -39,6 +39,7 @@ const TrainerPage = () => {
     const handleStatusUpdate = async (appointmentID, newStatus) => {
         const response = await fetch(`${apiUrl}/api/appointments/${appointmentID}`, {
             method: 'PUT',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -57,6 +58,7 @@ const TrainerPage = () => {
         const trainerID = JSON.parse(localStorage.getItem('currentUser'))._id;
         const response = await fetch(`${apiUrl}/api/trainers/${trainerID}/busy-dates`, {
             method: 'PUT',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
