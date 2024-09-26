@@ -2,7 +2,7 @@ import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
 import Appointment from '@/models/Appointment';
 import Trainer from '@/models/Trainer'; // Import Trainer model if needed
-
+import { corsMiddleware } from '@/lib/corsMiddleware';
 export async function GET() {
   await dbConnect();
 
@@ -39,3 +39,7 @@ export async function GET() {
     return new Response(JSON.stringify({ message: 'Error fetching users and appointments', error: error.message }), { status: 500 });
   }
 }
+
+export default corsMiddleware({
+  GET
+});

@@ -1,5 +1,6 @@
 import dbConnect from '@/lib/mongodb';
 import Trainer from '@/models/Trainer';
+import { corsMiddleware } from '@/lib/corsMiddleware';
 
 export async function GET(req, { params }) {
     await dbConnect();
@@ -39,3 +40,10 @@ export async function PUT(req, { params }) {
         return new Response(JSON.stringify({ message: 'Error adding busy date', error: error.message }), { status: 500 });
     }
 }
+
+export default corsMiddleware({
+  
+    GET,
+    PUT
+    
+  });

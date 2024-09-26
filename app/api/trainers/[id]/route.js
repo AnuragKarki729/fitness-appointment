@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb'; // Ensure this path is correct
 import Trainer from '@/models/Trainer';
+import { corsMiddleware } from '@/lib/corsMiddleware';
 
 export async function GET(request, { params }) {
   const { id } = params;
@@ -57,3 +58,9 @@ export async function PUT(req, { params }) {
     return new Response(JSON.stringify({ message: 'Error updating trainer', error: error.message }), { status: 500 });
   }
 }
+
+export default corsMiddleware({
+  DELETE,
+  GET,
+  PUT
+});

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb'; // Ensure this path is correct
 import Trainer from '@/models/Trainer'; // Import your Trainer model
-
+import { corsMiddleware } from '@/lib/corsMiddleware';
 export async function GET() {
   try {
     await dbConnect(); // Ensure database connection
@@ -38,11 +38,10 @@ export async function POST(req) {
   }
 }
 
+export default corsMiddleware({
 
+  GET,
 
-
-
-
-
-
+  POST
+});
 

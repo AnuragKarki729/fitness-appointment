@@ -1,5 +1,6 @@
 import dbConnect from '@/lib/mongodb'; // Ensure this path is correct
 import Trainer from '@/models/Trainer';
+import { corsMiddleware } from '@/lib/corsMiddleware';
 
 export async function POST(request) {
   const { selectedDate } = await request.json();
@@ -37,3 +38,7 @@ export async function POST(request) {
     );
   }
 }
+
+export default corsMiddleware({
+  POST
+});

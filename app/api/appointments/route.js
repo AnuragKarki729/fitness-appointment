@@ -1,5 +1,6 @@
 import dbConnect from '@/lib/mongodb';
 import Appointment from '@/models/Appointment';
+import { corsMiddleware } from '@/lib/corsMiddleware';
 
 export async function GET(req) {
   await dbConnect(); // Connect to MongoDB
@@ -89,3 +90,10 @@ export async function POST(req) {
     });
   }
 }
+
+export default corsMiddleware({
+  
+  GET,
+  
+  POST
+});

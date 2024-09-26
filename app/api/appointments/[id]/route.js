@@ -1,7 +1,8 @@
 import dbConnect from '@/lib/mongodb';
 import Appointment from '@/models/Appointment';
 import Trainer from '@/models/Trainer';
-
+import { corsMiddleware } from '@/lib/corsMiddleware';
+const apiUrl = process.env.NEXT_PUBLIC_API_BASE
 export async function DELETE(req, { params }) {
   await dbConnect();
   const { id } = params; // Appointment ID from the URL
@@ -66,7 +67,7 @@ export async function POST(req) {
     const body = await req.json();
     const { trainerID, userID, date } = body;
   
-    const clientNameResponse = await fetch(`/api/users/${userID}`);
+    const clientNameResponse = await fetch(`${apiUrl}/api/users/${userID}`);
       const clientNameData = await clientNameResponse.json();
   
       const clientName = clientNameData.username;
@@ -118,4 +119,10 @@ export async function POST(req) {
       });
     }
   }
-  
+
+  export default corsMiddleware({
+    DELETE,
+    GET,
+    PUT,
+    POST
+  });

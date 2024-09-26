@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import User from '@/models/User'; // Adjust the path to your model
 import Trainer from '@/models/Trainer'; // Import Trainer model
-
+import { corsMiddleware } from '@/lib/corsMiddleware';
 export async function POST(request) {
   const { email, password } = await request.json();
 
@@ -42,3 +42,7 @@ export async function POST(request) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
+export default corsMiddleware({
+  POST
+});
