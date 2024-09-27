@@ -1,11 +1,11 @@
-"use client"; 
+"use client";
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { DatePicker, Space } from 'antd'; 
+import { DatePicker, Space } from 'antd';
 import dayjs from 'dayjs';
 import Navbar from '@/app/components/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card, Button} from 'react-bootstrap'
+import { Card, Button } from 'react-bootstrap'
 
 function BookScreen() {
     const { trainerID } = useParams();
@@ -46,7 +46,7 @@ function BookScreen() {
         console.log(user.username)
         if (user.username && user._id) {
             setUserID(user._id);
-             // Set userID
+            // Set userID
             setUsername(user.username); // Set username
         }
     }, [trainerID]); // Runs once when component mounts and when trainerID changes
@@ -56,15 +56,15 @@ function BookScreen() {
         setSelectedDate(date);
 
         checkAvailability(date);
-        
+
     };
 
     // Check if the selected date is available
     const checkAvailability = (date) => {
         if (!date) return;
-    
+
         let isBooked = false; // Flag to track if the date is booked
-    
+
         // Loop through appointments to check for availability
         for (let i = 0; i < appointments.length; i++) {
             const appointmentDate = dayjs(appointments[i].date);
@@ -73,7 +73,7 @@ function BookScreen() {
                 break; // Exit the loop early since we found a match
             }
         }
-    
+
         if (isBooked) {
             setAvailabilityMessage(`Trainer busy on ${date.format('YYYY-MM-DD HH:mm')}`);
         } else {
@@ -92,48 +92,51 @@ function BookScreen() {
     };
     const today = dayjs();
     const disabledDate = (current) => {
-    return current && current < today.startOf('day');
-};
-    
+        return current && current < today.startOf('day');
+    };
+
     const handleBooking = async () => {
         if (!selectedDate) {
             alert("Please select a date and time.");
             return;
         }
-    
+
         if (!userID) {
             alert("User not logged in.");
             return;
         }
-    
+
         // Fetch trainer's busy dates and existing appointments
         const trainerResponse = await fetch(`${apiUrl}/api/trainers/${trainerID}`);
         const trainerData = await trainerResponse.json();
-        
+
         const busyDates = trainerData.busyDates || [];
         const existingAppointmentsResponse = await fetch(`${apiUrl}/api/appointments?trainerID=${trainerID}`);
         const existingAppointments = await existingAppointmentsResponse.json();
 
-        
+
         let isBusyDate = false;
         for (const busyDate of busyDates) {
-        if (dayjs(busyDate).isSame(selectedDate, 'day')) {
-            isBusyDate = true;
-            break;
-        }}
-        
-        const isConflictingAppointment = existingAppointments.some(appointment => {
+            if (dayjs(busyDate).isSame(selectedDate, 'day')) {
+                isBusyDate = true;
+                break;
+            }
+        }
+
+        let isConflictingAppointment = false;
+        for (const appointment of existingAppointments) {
             const appointmentDate = dayjs(appointment.date);
-            return (
-                appointmentDate.isSame(selectedDate, 'minute')
-            );
-        });
-    
+            if (appointmentDate.isSame(selectedDate, 'minute')) {
+                isConflictingAppointment = true;
+                break;
+            }
+        }
+
         if (isBusyDate || isConflictingAppointment) {
             alert("This date and time is not available for booking.");
             return;
         }
-    
+
         try {
             const response = await fetch(`${apiUrl}/api/appointments`, {
                 method: 'POST',
@@ -147,7 +150,7 @@ function BookScreen() {
                     date: selectedDate.toISOString(),
                 }),
             });
-    
+
             if (response.ok) {
                 setBookingSuccess(true);
                 setAvailabilityMessage("Booking successful!");
@@ -160,57 +163,57 @@ function BookScreen() {
             setAvailabilityMessage("Error booking the trainer.");
         }
     };
-    
+
 
     return (
         <div>
-        <Navbar pageTitle="Book Trainer" />
-        <h1 style={{ marginTop: '40px' }}></h1>
+            <Navbar pageTitle="Book Trainer" />
+            <h1 style={{ marginTop: '40px' }}></h1>
 
-        {trainer && username ? (
-            <Card style={{ width: '400px', margin: 'auto', padding: '20px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
-                <Card.Body>
-                    <Card.Title>Trainer: {trainer.name}</Card.Title>
-                    <Card.Text>
-                        <strong>Details:</strong> {trainer.description}
-                    </Card.Text>
-                    <Card.Text>
-                        <strong>Price:</strong> ${trainer.price}
-                    </Card.Text>
+            {trainer && username ? (
+                <Card style={{ width: '400px', margin: 'auto', padding: '20px', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>
+                    <Card.Body>
+                        <Card.Title>Trainer: {trainer.name}</Card.Title>
+                        <Card.Text>
+                            <strong>Details:</strong> {trainer.description}
+                        </Card.Text>
+                        <Card.Text>
+                            <strong>Price:</strong> ${trainer.price}
+                        </Card.Text>
 
-                    {/* Display User Name */}
-                    {username && <Card.Text><strong>User:</strong> {username}</Card.Text>}
+                        {/* Display User Name */}
+                        {username && <Card.Text><strong>User:</strong> {username}</Card.Text>}
 
-                    <Space direction="vertical" size={12}>
-                <DatePicker
-                    showTime={{ format: 'HH:mm', minuteStep: 60 }}
-                    format="YYYY-MM-DD HH:mm"
-                    onChange={handleDateChange}
-                    disabledHours={disabledHours}
-                    disabledDate={disabledDate}
-                />
-                <p style={{ fontStyle: 'italic' }}>
-                    Trainers can be booked 5:00 AM to 9:00 PM
-                </p>
-            </Space>
+                        <Space direction="vertical" size={12}>
+                            <DatePicker
+                                showTime={{ format: 'HH:mm', minuteStep: 60 }}
+                                format="YYYY-MM-DD HH:mm"
+                                onChange={handleDateChange}
+                                disabledHours={disabledHours}
+                                disabledDate={disabledDate}
+                            />
+                            <p style={{ fontStyle: 'italic' }}>
+                                Trainers can be booked 5:00 AM to 9:00 PM
+                            </p>
+                        </Space>
 
-                    {availabilityMessage && <p>{availabilityMessage}</p>}
+                        {availabilityMessage && <p>{availabilityMessage}</p>}
 
-                    <Button 
-                        variant="primary" 
-                        onClick={handleBooking} 
-                        disabled={!selectedDate || bookingSuccess}
-                        style={{ marginTop: '10px' }}
-                    >
-                        {bookingSuccess ? "Booking Confirmed" : "Book Appointment"}
-                    </Button>
-                </Card.Body>
-            </Card>
-        ) : (
-            <p>Loading trainer details...</p>
-        )}
-    </div>
-);
+                        <Button
+                            variant="primary"
+                            onClick={handleBooking}
+                            disabled={!selectedDate || bookingSuccess}
+                            style={{ marginTop: '10px' }}
+                        >
+                            {bookingSuccess ? "Booking Confirmed" : "Book Appointment"}
+                        </Button>
+                    </Card.Body>
+                </Card>
+            ) : (
+                <p>Loading trainer details...</p>
+            )}
+        </div>
+    );
 }
 
 export default BookScreen;
