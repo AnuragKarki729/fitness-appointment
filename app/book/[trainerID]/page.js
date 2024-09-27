@@ -62,17 +62,22 @@ function BookScreen() {
     // Check if the selected date is available
     const checkAvailability = (date) => {
         if (!date) return;
-        
-        const isBooked = appointments.some(appointment => {
-            const appointmentDate = dayjs(appointment.date);
-            return appointmentDate.isSame(date, 'minute');
-        });
-
+    
+        let isBooked = false; // Flag to track if the date is booked
+    
+        // Loop through appointments to check for availability
+        for (let i = 0; i < appointments.length; i++) {
+            const appointmentDate = dayjs(appointments[i].date);
+            if (appointmentDate.isSame(date, 'minute')) {
+                isBooked = true; // Set flag if a matching appointment is found
+                break; // Exit the loop early since we found a match
+            }
+        }
+    
         if (isBooked) {
             setAvailabilityMessage(`Trainer busy on ${date.format('YYYY-MM-DD HH:mm')}`);
         } else {
             setAvailabilityMessage(`Trainer available on ${date.format('YYYY-MM-DD HH:mm')}`);
-            
         }
     };
 
