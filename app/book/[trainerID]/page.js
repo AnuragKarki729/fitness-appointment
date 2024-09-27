@@ -115,11 +115,13 @@ function BookScreen() {
         const existingAppointments = await existingAppointmentsResponse.json();
 
         
-        const isBusyDate = busyDates.some(busyDate => 
-            dayjs(busyDate).isSame(selectedDate, 'day')
-        );
-    
-    
+        let isBusyDate = false;
+        for (const busyDate of busyDates) {
+        if (dayjs(busyDate).isSame(selectedDate, 'day')) {
+            isBusyDate = true;
+            break;
+        }}
+        
         const isConflictingAppointment = existingAppointments.some(appointment => {
             const appointmentDate = dayjs(appointment.date);
             return (
