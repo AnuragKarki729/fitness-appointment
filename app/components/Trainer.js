@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import styles from './Trainer.module.css'; // Import CSS module for styles
 import Link from 'next/link'; // Import Next.js Link component
 import 'bootstrap/dist/css/bootstrap.min.css';
-const Trainer = ({ trainer , date}) => {
+const Trainer = ({ trainer}) => {
   const [show, setShow] = useState(false);
 
   console.log('Received date in Trainer component:', date);
