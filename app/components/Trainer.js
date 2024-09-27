@@ -8,7 +8,7 @@ const Trainer = ({ trainer}) => {
   const [show, setShow] = useState(false);
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE
 
-  console.log('Received date in Trainer component:', date);
+  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
