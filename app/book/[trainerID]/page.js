@@ -22,6 +22,7 @@ function BookScreen() {
     useEffect(() => {
         // Fetch trainer details and their appointments
         const fetchData = async () => {
+            console.log('API URL:', `${apiUrl}/api/trainers/${trainerID}`);
             try {
                 const trainerResponse = await fetch(`${apiUrl}/api/trainers/${trainerID}`);
                 const trainerData = await trainerResponse.json();
