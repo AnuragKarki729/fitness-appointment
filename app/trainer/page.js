@@ -82,6 +82,7 @@ const TrainerPage = () => {
                     <tr>
                         <th>Client Name</th>
                         <th>Appointment Date</th>
+                        <th>Time</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -90,7 +91,8 @@ const TrainerPage = () => {
                     {appointments.map(appointment => (
                         <tr key={appointment._id}>
                             <td>{appointment.user.username}</td>
-                            <td>{new Date(appointment.date).toLocaleString()}</td>
+                            <td>{new Date(appointment.date).toLocaleDateString()}</td>
+                            <td>{new Date(appointment.date).toLocaleTimeString()}</td>
                             <td>{appointment.status}</td>
                             <td>
                                 <Button variant="success" onClick={() => handleStatusUpdate(appointment._id, 'Completed')}>Mark as Completed</Button>

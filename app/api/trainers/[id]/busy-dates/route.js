@@ -2,7 +2,7 @@ import dbConnect from '@/lib/mongodb';
 import Trainer from '@/models/Trainer';
 import { corsMiddleware } from '@/lib/corsMiddleware';
 
-export const GET = corsMiddleware(async(req, { params }) =>{
+export async function GET (req, { params }){
     await dbConnect();
     const { id } = params; // Trainer ID from the URL
 
@@ -17,9 +17,9 @@ export const GET = corsMiddleware(async(req, { params }) =>{
     } catch (error) {
         return new Response(JSON.stringify({ message: 'Error fetching busy dates', error: error.message }), { status: 500 });
     }
-})
+}
 
-export const PUT = corsMiddleware(async(req, { params }) => {
+export async function PUT (req, { params }) {
     await dbConnect();
     const { id } = params; // Trainer ID from the URL
     const { date } = await req.json(); // Busy date from request body
@@ -39,4 +39,4 @@ export const PUT = corsMiddleware(async(req, { params }) => {
     } catch (error) {
         return new Response(JSON.stringify({ message: 'Error adding busy date', error: error.message }), { status: 500 });
     }
-})
+}

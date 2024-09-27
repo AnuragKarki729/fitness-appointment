@@ -25,6 +25,9 @@ function BookScreen() {
             console.log('API URL:', `${apiUrl}/api/trainers/${trainerID}`);
             try {
                 const trainerResponse = await fetch(`${apiUrl}/api/trainers/${trainerID}`);
+                if (!trainerResponse.ok) {
+                    throw new Error(`HTTP error! status: ${trainerResponse.status}`);
+                }
                 const trainerData = await trainerResponse.json();
                 setTrainer(trainerData);
 
