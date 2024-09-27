@@ -6,6 +6,7 @@ import Link from 'next/link'; // Import Next.js Link component
 import 'bootstrap/dist/css/bootstrap.min.css';
 const Trainer = ({ trainer}) => {
   const [show, setShow] = useState(false);
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE
 
   console.log('Received date in Trainer component:', date);
   const handleClose = () => setShow(false);
@@ -30,7 +31,7 @@ const Trainer = ({ trainer}) => {
         </b>
 
         <div style={{ float: 'left' }}>
-          <Link href={{pathname:`/book/${trainer._id}` }} passHref>
+          <Link href={{pathname:`${apiUrl}/book/${trainer._id}` }} passHref>
             <button className="btn btn-primary">Book Trainer</button>
           </Link>
           <Button className="btn btn-primary" style={{marginLeft:'165px'}}onClick={handleShow}>
