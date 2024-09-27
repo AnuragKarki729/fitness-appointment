@@ -30,7 +30,7 @@ const Trainer = ({ trainer}) => {
         </b>
 
         <div style={{ float: 'left' }}>
-          <Link href={{pathname:`/book/${trainer._id}`, query:{date: date?.toISOString() }, }} passHref>
+          <Link href={{pathname:`/book/${trainer._id}` }} passHref>
             <button className="btn btn-primary">Book Trainer</button>
           </Link>
           <Button className="btn btn-primary" style={{marginLeft:'165px'}}onClick={handleShow}>
